@@ -11,6 +11,8 @@ import {
 import {
   ColumnDefDirective
 } from './directives';
+import { SortHeaderComponent } from './components/sort-header/sort-header.component';
+import { SortDirective } from './directives/sort.directive';
 
 
 
@@ -22,7 +24,9 @@ import {
     Cell,
     ColumnDefDirective,
     CellDefDirective,
-    CellHeaderDefDirective
+    CellHeaderDefDirective,
+    SortHeaderComponent,
+    SortDirective
   ],
   exports: [
     TableComponent,
@@ -30,7 +34,9 @@ import {
     ColumnDefDirective,
     CellHeaderDefDirective,
     CellDefDirective,
-    Cell
+    Cell,
+    SortHeaderComponent,
+    SortDirective
   ],
   imports: [
     CommonModule

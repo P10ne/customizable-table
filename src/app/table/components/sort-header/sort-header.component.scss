@@ -1,0 +1,16 @@
+.sort {
+  &-header {
+    display: flex;
+  }
+  &-arrow {
+    display: flex;
+    transition: all 0.3s;
+    transform: rotateX(90deg);
+    &_asc {
+      transform: rotateX(0);
+    }
+    &_desc {
+      transform: rotateX(180deg);
+    }
+  }
+}

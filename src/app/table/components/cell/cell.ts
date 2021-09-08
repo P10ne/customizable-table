@@ -1,4 +1,4 @@
-import { Component, Directive, TemplateRef } from '@angular/core';
+import { Directive, TemplateRef } from '@angular/core';
 
 interface ICellDef {
   template: TemplateRef<any>;
@@ -7,19 +7,13 @@ interface ICellDef {
 @Directive()
 class CellBase {}
 
-const CELL_TEMPLATE = `<ng-content></ng-content>`;
-
-@Component({
-  selector: 'th[app-header-cell]',
-  template: CELL_TEMPLATE,
-  styleUrls: ['./cell.scss']
+@Directive({
+  selector: 'th[app-header-cell]'
 })
 export class HeaderCell extends CellBase {}
 
-@Component({
-  selector: 'td[app-cell]',
-  template: CELL_TEMPLATE,
-  styleUrls: ['./cell.scss']
+@Directive({
+  selector: 'td[app-cell]'
 })
 export class Cell extends CellBase {}
 
