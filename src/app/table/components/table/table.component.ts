@@ -13,7 +13,7 @@ import { TableDataSource } from "../../models/TableDataSource";
 import { TTableData } from "../../models/TTableData";
 
 @Component({
-  selector: 'table[app-table]',
+  selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
