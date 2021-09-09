@@ -7,8 +7,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ColumnDefDirective } from "../../directives";
+import { ColumnDefDirective, SortDirective } from "../../directives";
 import { RowComponent } from "../row/row.component";
+import { TableDataSource } from "../../models/TableDataSource";
+import { TTableData } from "../../models/TTableData";
 
 @Component({
   selector: 'table[app-table]',
@@ -26,7 +28,15 @@ export class TableComponent implements OnInit, AfterViewInit {
   private _bodyRowContainer!: ViewContainerRef;
 
   @Input()
-  dataSource!: any[];
+  set dataSource(data: TTableData<any>) {
+    if (data instanceof TableDataSource) {
+      this.subscribeToDataSource(data);
+    } else {
+      this._data = data;
+    }
+  }
+
+  private _data: any[] = [];
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -55,12 +65,26 @@ export class TableComponent implements OnInit, AfterViewInit {
   private createBodyRows(): void {
     const bodyCellDefTpls = this._columns.map(column => column.cell.template);
     const rowFactory = this.resolver.resolveComponentFactory(RowComponent);
-    this.dataSource.forEach(rowData => {
+    this._data.forEach(rowData => {
       const rowRef = rowFactory.create(this.injector);
       rowRef.instance.cellTemplates = bodyCellDefTpls;
       rowRef.instance.rowData = rowData;
       rowRef.hostView.detectChanges();
       this._bodyRowContainer.insert(rowRef.hostView);
     });
+  }
+
+  private subscribeToDataSource(data: TableDataSource<any>): void {
+    data.data.subscribe(newData => {
+      this._data = newData;
+      setTimeout(() => {
+        this.updateView();
+      });
+    })
+  }
+
+  private updateView(): void {
+    this._bodyRowContainer?.clear();
+    this.createBodyRows();
   }
 }

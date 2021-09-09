@@ -1,5 +1,5 @@
 import { Directive, Input, Output } from '@angular/core';
-import { Observable, Subject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import {
   HeaderSortEvent,
   SortEvent
@@ -14,7 +14,7 @@ export class SortDirective {
     this.changeSort(v);
   }
 
-  private _sortChange = new Subject<SortEvent>();
+  private _sortChange = new BehaviorSubject<SortEvent>(null);
 
   @Output()
   get sortChange(): Observable<SortEvent> {
