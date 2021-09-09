@@ -31,6 +31,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   set dataSource(data: TTableData<any>) {
     if (data instanceof TableDataSource) {
       this.subscribeToDataSource(data);
+      data.sorting = this.sort;
     } else {
       this._data = data;
     }
@@ -40,7 +41,8 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   constructor(
     private resolver: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private sort: SortDirective
   ) {}
 
   ngOnInit(): void {
