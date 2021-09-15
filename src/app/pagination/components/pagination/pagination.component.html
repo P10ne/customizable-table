@@ -1,0 +1,29 @@
+<div class="pagination">
+  <div class="container">
+    <div class="per-page">
+      <div class="field">
+        <label>Элементов на страницу</label>
+        <select
+          [(ngModel)]="perPage" (change)="emitChanges()"
+        >
+          <option
+            *ngFor="let pageSize of perPageOptions"
+            [value]="pageSize"
+          >
+            {{pageSize}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="pages">
+      <div class="pages__btn-group">
+        <button class="pages__btn" [disabled]="isPrevBtnDisabled"> << </button>
+        <button class="pages__btn" [disabled]="isPrevBtnDisabled" (click)="prev()"> < </button>
+      </div>
+      <div class="pages__btn-group">
+        <button class="pages__btn" [disabled]="isNextBtnDisabled" (click)="next()"> > </button>
+        <button class="pages__btn" [disabled]="isNextBtnDisabled"> >> </button>
+      </div>
+    </div>
+  </div>
+</div>
