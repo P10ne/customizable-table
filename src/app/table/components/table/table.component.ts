@@ -15,7 +15,8 @@ import { TTableData } from "../../models/TTableData";
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TableComponent implements OnInit, AfterViewInit {
   @ContentChildren(ColumnDefDirective)

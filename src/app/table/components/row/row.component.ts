@@ -3,7 +3,8 @@ import { AfterViewInit, Component, Input, TemplateRef, ViewChild, ViewContainerR
 @Component({
   selector: 'tr[app-row]',
   templateUrl: './row.component.html',
-  styleUrls: ['./row.component.scss']
+  styleUrls: ['./row.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RowComponent implements AfterViewInit {
   @ViewChild('rowContainer', { read: ViewContainerRef })

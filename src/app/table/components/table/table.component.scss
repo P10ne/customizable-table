@@ -1,0 +1,10 @@
+app-table {
+  display: block;
+  & table {
+    width: 100%;
+  }
+  & [app-cell], & [app-header-cell] {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 12px 8px;
+  }
+}
