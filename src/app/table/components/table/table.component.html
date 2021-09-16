@@ -6,3 +6,7 @@
   <ng-container #bodyRow></ng-container>
   </tbody>
 </table>
+
+<app-pagination *ngIf="usePagination"
+                [totalCount]="totalCount"
+></app-pagination>

@@ -1,4 +1,4 @@
 export interface PaginationChangeEvent {
-  page: number;
-  itemsPerPage: number;
+  currentPage: number;
+  perPage: number;
 }

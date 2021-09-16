@@ -1,16 +1,21 @@
 import {
   AfterViewInit,
-  Component, ComponentFactoryResolver,
-  ContentChildren, Injector, Input,
+  Component,
+  ComponentFactoryResolver,
+  ContentChildren,
+  Injector,
+  Input,
   OnInit,
   QueryList,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { ColumnDefDirective, SortDirective } from "../../directives";
 import { RowComponent } from "../row/row.component";
 import { TableDataSource } from "../../models/TableDataSource";
 import { TTableData } from "../../models/TTableData";
+import { PaginationComponent } from "../../../pagination/components/pagination/pagination.component";
 
 @Component({
   selector: 'app-table',
@@ -28,22 +33,35 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild('bodyRow', { read: ViewContainerRef })
   private _bodyRowContainer!: ViewContainerRef;
 
+  @ViewChild(PaginationComponent)
+  private _pagination?: PaginationComponent;
+
+  private _dataSource?: TableDataSource<any>;
+
   @Input()
   set dataSource(data: TTableData<any>) {
     if (data instanceof TableDataSource) {
+      this._dataSource = data;
       this.subscribeToDataSource(data);
-      data.sorting = this.sort;
     } else {
       this._data = data;
     }
   }
 
+  @Input()
+  usePagination: boolean = false;
+
   private _data: any[] = [];
 
+  private _totalCount: number = 0;
+  get totalCount(): number {
+    return this._totalCount;
+  }
+
   constructor(
-    private resolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private sort: SortDirective
+    private _resolver: ComponentFactoryResolver,
+    private _injector: Injector,
+    private _sort: SortDirective
   ) {}
 
   ngOnInit(): void {
@@ -53,13 +71,19 @@ export class TableComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.createHeaderRow();
     this.createBodyRows();
+
+    if (this._dataSource) {
+      if (this._sort) this._dataSource.sorting = this._sort;
+      if (this._pagination) this._dataSource.pagination = this._pagination;
+      this._dataSource?.connect();
+    }
   }
 
   // todo рефакторинг методов
   private createHeaderRow(): void {
     const headerCellDefTpls = this._columns.map(column => column.headerCell.template);
-    const rowFactory = this.resolver.resolveComponentFactory(RowComponent);
-    const rowRef = rowFactory.create(this.injector);
+    const rowFactory = this._resolver.resolveComponentFactory(RowComponent);
+    const rowRef = rowFactory.create(this._injector);
     rowRef.instance.cellTemplates = headerCellDefTpls;
     rowRef.hostView.detectChanges();
     this._headerRowContainer.insert(rowRef.hostView);
@@ -67,9 +91,9 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   private createBodyRows(): void {
     const bodyCellDefTpls = this._columns.map(column => column.cell.template);
-    const rowFactory = this.resolver.resolveComponentFactory(RowComponent);
+    const rowFactory = this._resolver.resolveComponentFactory(RowComponent);
     this._data.forEach(rowData => {
-      const rowRef = rowFactory.create(this.injector);
+      const rowRef = rowFactory.create(this._injector);
       rowRef.instance.cellTemplates = bodyCellDefTpls;
       rowRef.instance.rowData = rowData;
       rowRef.hostView.detectChanges();
@@ -78,8 +102,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   private subscribeToDataSource(data: TableDataSource<any>): void {
-    data.data.subscribe(newData => {
-      this._data = newData;
+    data.stream$.subscribe(newData => {
+      this._data = newData.data;
+      this._totalCount = newData.totalCount;
+
       setTimeout(() => {
         this.updateView();
       });

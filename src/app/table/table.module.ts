@@ -13,6 +13,7 @@ import {
 } from './directives';
 import { SortHeaderComponent } from './components/sort-header/sort-header.component';
 import { SortDirective } from './directives/sort.directive';
+import { PaginationModule } from "../pagination/pagination.module";
 
 
 
@@ -39,7 +40,8 @@ import { SortDirective } from './directives/sort.directive';
     SortDirective
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    PaginationModule
   ]
 })
 export class TableModule { }

@@ -19,7 +19,7 @@ export class PaginationComponent implements OnInit {
   currentPage: number = 1;
 
   @Input()
-  itemsCount: number = 0;
+  totalCount: number = 0;
 
   @Output()
   change = new BehaviorSubject<PaginationChangeEvent | null>(null);
@@ -29,7 +29,7 @@ export class PaginationComponent implements OnInit {
   }
 
   get isNextBtnDisabled(): boolean {
-    return this.currentPage >= Math.ceil(this.itemsCount / this.perPage);
+    return this.currentPage >= Math.ceil(this.totalCount / this.perPage);
   }
 
   constructor() { }
@@ -49,7 +49,7 @@ export class PaginationComponent implements OnInit {
   }
 
   emitChanges(): void {
-    this.change.next({page: this.currentPage, itemsPerPage: this.perPage});
+    this.change.next({currentPage: this.currentPage, perPage: this.perPage});
   }
 
 }

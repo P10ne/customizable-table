@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'tr[app-row]',
